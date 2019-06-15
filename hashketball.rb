@@ -40,7 +40,7 @@ def game_hash
           number: 1,
           shoe: 19,
           points: 26,
-          rebounds: 12,
+          rebounds: 11,
           assists: 6,
           steals: 3,
           blocks: 8,
@@ -78,7 +78,7 @@ def game_hash
           points: 12,
           rebounds: 4,
           assists: 7,
-          steals: 7,
+          steals: 22, #different from solution
           blocks: 15,
           slam_dunks: 10
         },
@@ -219,4 +219,54 @@ def player_numbers(name)
     end
   end
   jersey_numbers
+end
+
+def player_stats(name)
+  stats = nil
+  #use same iteration as num_points_scored
+  #had issue b/c bismack steals and mason plumlee rebounds different from solution
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute, data|
+      #check if attribute is equal to players
+      if attribute == :players
+      #if so, do other iteration
+        data.each do |player, player_data| #data is a hash of keys of player names and their data
+          #check if player is equal to name
+          if player == name
+            stats = player_data
+          end
+        end
+      end
+    end
+  end
+stats
+end
+
+def big_shoe_rebounds
+  largest_size = nil
+  associated_player = nil
+  associated_player_rebounds = nil
+  #First, find the player with the largest shoe size
+  #Then, return that player's number of rebounds
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute, data|
+      #check if attribute is equal to players
+      if attribute == :players
+      #if so, do other iteration
+        data.each do |player, player_data| #data is a hash of keys of player names and their data
+          #binding.pry
+          if !largest_size
+            largest_size = player_data[:shoe]
+            associated_player = player
+            associated_player_rebounds = player_data[:rebounds]
+          elsif largest_size < player_data[:shoe]
+            largest_size = player_data[:shoe]
+            associated_player = player
+            associated_player_rebounds = player_data[:rebounds]
+          end
+        end
+      end
+    end
+  end
+  associated_player_rebounds
 end
