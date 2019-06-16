@@ -270,3 +270,107 @@ def big_shoe_rebounds
   end
   associated_player_rebounds
 end
+
+def most_points_scored
+  #player with most points
+  #can do same thing as shoe rebounds
+  most_points = nil
+  associated_player = nil
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute, data|
+      #check if attribute is equal to players
+      if attribute == :players
+      #if so, do other iteration
+        data.each do |player, player_data| #data is a hash of keys of player names and their data
+          #binding.pry
+          if !most_points
+            most_points = player_data[:points]
+            associated_player = player
+          elsif most_points < player_data[:points]
+            most_points = player_data[:points]
+            associated_player = player
+          end
+        end
+      end
+    end
+  end
+  associated_player
+end
+
+def winning_team
+  #need to add up all player points from each team then compare
+  home_points = 0
+  away_points = 0
+  winner = nil
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute, data|
+      #check if attribute is equal to players
+      if attribute == :players
+      #if so, do other iteration
+        data.each do |player, player_data| #data is a hash of keys of player names and their data
+          if location == :home
+            home_points += player_data[:points]
+          else
+            away_points += player_data[:points]
+          end
+        end
+      end
+    end
+  end
+#make comparison
+  if home_points > away_points
+    winner = game_hash[:home][:team_name]
+  else
+    winner = game_hash[:away][:team_name]
+  end
+winner
+end
+
+def player_with_longest_name
+  #can do same thing as shoe rebounds
+  longest_name = nil
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute, data|
+      #check if attribute is equal to players
+      if attribute == :players
+      #if so, do other iteration
+        data.each do |player, player_data| #data is a hash of keys of player names and their data
+          #binding.pry
+          if !longest_name
+            longest_name = player
+          elsif longest_name.length < player.length
+            longest_name = player
+          end
+        end
+      end
+    end
+  end
+  longest_name
+end
+
+def long_name_steals_a_ton?
+  #see who has most steals
+  #then compare to return value of player_with_longest_name
+  #can do same thing as shoe rebounds
+  most_steals = nil
+  associated_player = nil
+  game_hash.each do |location, team_data|
+    team_data.each do |attribute, data|
+      #check if attribute is equal to players
+      if attribute == :players
+      #if so, do other iteration
+        data.each do |player, player_data| #data is a hash of keys of player names and their data
+          #binding.pry
+          if !most_steals
+            most_steals = player_data[:steals]
+            associated_player = player
+          elsif most_steals < player_data[:steals]
+            most_steals = player_data[:steals]
+            associated_player = player
+          end
+        end
+      end
+    end
+  end
+  associated_player == player_with_longest_name
+end
